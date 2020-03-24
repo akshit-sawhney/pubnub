@@ -28,7 +28,7 @@
 
   button.addEventListener('click', () => {
     pubnub.publish({
-      channel: "pubnub_onboarding_channel",
+      channel: "cristiano",
       message: { "sender": uuid, "content": "Hello From Client" }
     }, function (status, response) {
       console.log('response of publishing the event: ', status, response);
@@ -46,7 +46,7 @@
           "profile_pic": "Hala madrid"
         },
         uuid: uuid,
-        channels: ['pubnub_onboarding_channel']
+        channels: ['cristiano']
       },
       function (status) {
         // handle state setting response
@@ -55,26 +55,47 @@
   });
 
   pubnub.subscribe({
-    channels: ['pubnub_onboarding_channel'],
+    channels: ['cristiano', 'ronaldo'],
     withPresence: true
   });
 
   pubnub.addListener({
     message: function (event) {
+      console.log('message');
+      console.log(event);
       let pElement = document.createElement('p');
       pElement.appendChild(document.createTextNode(event.message.content));
       document.body.appendChild(pElement);
     },
     presence: function (event) {
+      console.log('presence');
+      console.log(event);
       let pElement = document.createElement('p');
       pElement.appendChild(document.createTextNode(event.uuid + " has joined."));
       document.body.appendChild(pElement);
     }
   });
 
+  pubnub.channelGroups.listChannels(
+    {
+        channelGroup: "realMadrid"
+    }, 
+    function (status, response) {
+		if (status.error) {
+			console.log("operation failed w/ error:", status);
+			return;
+		}
+		
+		console.log("listing push channel for device")
+		response.channels.forEach( function (channel) {
+			console.log(channel)
+		})
+    }
+);
+
   pubnub.history(
     {
-      channel: 'pubnub_onboarding_channel',
+      channel: 'cristiano',
       count: 10,
       stringifiedTimeToken: true,
     },
