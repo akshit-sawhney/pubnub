@@ -14,7 +14,7 @@
 <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.min.js"></script>
 <script>
 
-  const uuid = '736999';
+  const uuid = '736112';
   const pubnub = new PubNub({
     publishKey: "pub-c-0f45817e-a821-4d8b-9e50-6a0582cb8ac4",
     subscribeKey: "sub-c-472d7842-645d-11ea-b5f8-9a833ea0503a",
@@ -28,7 +28,7 @@
 
   button.addEventListener('click', () => {
     pubnub.publish({
-      channel: "cristiano",
+      channel: "chat_event.1234",
       message: { "sender": uuid, "content": "Hello From Client" }
     }, function (status, response) {
       console.log('response of publishing the event: ', status, response);
@@ -46,7 +46,7 @@
           "profile_pic": "Hala madrid"
         },
         uuid: uuid,
-        channels: ['cristiano']
+        channels: ['chat_event.1234']
       },
       function (status) {
         // handle state setting response
@@ -55,7 +55,7 @@
   });
 
   pubnub.subscribe({
-    channels: ['cristiano', 'ronaldo'],
+    channels: ['chat_event.1234', 'classroom.1234'],
     withPresence: true
   });
 
@@ -78,11 +78,11 @@
 
   pubnub.channelGroups.listChannels(
     {
-        channelGroup: "realMadrid"
+        channelGroup: "classroom_group.1234"
     }, 
     function (status, response) {
 		if (status.error) {
-			console.log("operation failed w/ error:", status);
+			console.log("List operation failed w/ error:", status);
 			return;
 		}
 		
@@ -95,7 +95,7 @@
 
   pubnub.history(
     {
-      channel: 'cristiano',
+      channel: 'chat_event.1234',
       count: 10,
       stringifiedTimeToken: true,
     },
@@ -118,7 +118,7 @@
   setTimeout(() => {
     pubnub.hereNow(
     {
-        channelGroups : ["realMadrid"],
+        channels : ["chat_event.1234"],
         includeUUIDs: true,
         includeState: true 
     },
