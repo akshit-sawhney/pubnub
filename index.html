@@ -8,6 +8,8 @@
 <body>
   <input id="publish-button" type="submit" value="Click here to Publish" />
   <br />
+  <input id="breakout-publish-button" type="submit" value="Click here to Publish Breakout Message" />
+  <br />
   <input id="create-user-button" type="submit" value="Click here to Create User" />
 </body>
 
@@ -24,12 +26,22 @@
   });
 
   const button = document.getElementById('publish-button');
+  const breakoutButton = document.getElementById('breakout-publish-button');
   const createUserButton = document.getElementById('create-user-button');
 
   button.addEventListener('click', () => {
     pubnub.publish({
-      channel: "chat_event.1234",
+      channel: "chat_event.12346",
       message: { "sender": uuid, "content": "Hello From Client" }
+    }, function (status, response) {
+      console.log('response of publishing the event: ', status, response);
+    });
+  });
+
+  breakoutButton.addEventListener('click', () => {
+    pubnub.publish({
+      channel: "breakout_chat_event_12346.1234",
+      message: { "sender": uuid, "content": "Hello From Breakout" }
     }, function (status, response) {
       console.log('response of publishing the event: ', status, response);
     });
@@ -46,7 +58,7 @@
           "profile_pic": "Hala madrid"
         },
         uuid: uuid,
-        channels: ['chat_event.1234']
+        channels: ['chat_event.12346']
       },
       function (status) {
         // handle state setting response
@@ -55,7 +67,7 @@
   });
 
   pubnub.subscribe({
-    channels: ['chat_event.1234', 'classroom.1234'],
+    channels: ['chat_event.12346', 'classroom.12346'],
     withPresence: true
   });
 
@@ -78,7 +90,7 @@
 
   pubnub.channelGroups.listChannels(
     {
-        channelGroup: "classroom_group.1234"
+        channelGroup: "classroom_group.12346"
     }, 
     function (status, response) {
 		if (status.error) {
@@ -95,7 +107,7 @@
 
   pubnub.history(
     {
-      channel: 'chat_event.1234',
+      channel: 'chat_event.12346',
       count: 10,
       stringifiedTimeToken: true,
     },
@@ -118,7 +130,7 @@
   setTimeout(() => {
     pubnub.hereNow(
     {
-        channels : ["chat_event.1234"],
+        channels : ["chat_event.12346"],
         includeUUIDs: true,
         includeState: true 
     },
