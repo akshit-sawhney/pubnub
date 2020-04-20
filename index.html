@@ -16,14 +16,14 @@
 <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.min.js"></script>
 <script>
 
-  const uuid = '736112';
+  const uuid = '1674643';
   const newUuid = PubNub.generateUUID();
   const pubnub = new PubNub({
     publishKey: "pub-c-0f45817e-a821-4d8b-9e50-6a0582cb8ac4",
     subscribeKey: "sub-c-472d7842-645d-11ea-b5f8-9a833ea0503a",
     uuid: uuid,
     presenceTimeout: 30,
-    authKey : 'eyJhbGciOiJIUzI1NiJ9.eyJyYXIiOlt7ImlkIjo1LCJuYW1lIjoic3R1ZGVudCJ9XSwib3MiOiJ3ZWIiLCJpZCI6MTIsInRwIjoiYXQiLCJ0aWQiOiJzdHVkZW50IiwiY2lkIjoiMSIsImlhdCI6MTU2NzU5ODE4MiwiaXNzIjoiTm9vbiBBY2FkZW15IiwiZXhwIjoxNTk3NTk4MTgyfQ.h5_bmsh6KVR4JGTQdnoi0Cj6z9SaQjSBArKmBvtzNm4'
+    authKey : 'eyJhbGciOiJIUzI1NiJ9.eyJyYXIiOlt7ImlkIjo1LCJuYW1lIjoic3R1ZGVudCJ9XSwib3MiOiJ3ZWIiLCJpZCI6MTIsInRwIjoiYXQiLCJ0aWQiOiJzdHVkZW50IiwiY2lkIjoiMSIsImlhdCI6MTU2NzU5ODE4MiwiaXNzIjoiTm9vbiBBY2FkZW15IiwiZXhwIjoxNTk3NTk4MTgyfQ.h5_bmsh6KVR4JGTQdnoi0Cj6z9SaQjSBArKmBvtzNm4::1674643'
   });
 
   const button = document.getElementById('publish-button');
@@ -41,7 +41,7 @@
 
   breakoutButton.addEventListener('click', () => {
     pubnub.publish({
-      channel: "breakout_chat_event_12346.1234",
+      channel: "breakout_chat_event.12346_1234",
       message: { "sender": uuid, "content": "Hello From Breakout" }
     }, function (status, response) {
       console.log('response of publishing the event: ', status, response);
@@ -57,13 +57,13 @@
           "email": "ronaldo@juve.com",
           "gender": "male",
           "profile_pic": "Hala madrid",
-          "user_id": 736112,
+          "user_id": 1674643,
           "_uuid": newUuid,
           "my_role": "student",
           "device": "abc:abc"
         },
         uuid: uuid,
-        channels: ['chat_event.12346']
+        channels: ['classroom.12346', 'chat_event.12346']
       },
       function (status) {
         // handle state setting response
@@ -72,8 +72,7 @@
   });
 
   pubnub.subscribe({
-    channels: ['chat_event.12346', 'classroom.12346', 'breakout_chat_event_12346.1234', 'breakout_12346.1234', 'classroom_unicast.736112'],
-    withPresence: true
+    channels: ['chat_event.12346', 'classroom.12346', 'breakout_chat_event.12346_1234', 'breakout_12346.1234', 'classroom_unicast.1674643']
   });
 
   pubnub.addListener({
