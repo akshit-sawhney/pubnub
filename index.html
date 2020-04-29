@@ -11,6 +11,11 @@
   <input id="breakout-publish-button" type="submit" value="Click here to Publish Breakout Message" />
   <br />
   <input id="create-user-button" type="submit" value="Click here to Create User" />
+  <br />
+  <input id="get-user-button" type="submit" value="Click here to Get User" />
+
+  <br />
+  <input id="unsubscribe-user-button" type="submit" value="Click here to Unsubscribe User" />
 </body>
 
 <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.min.js"></script>
@@ -22,13 +27,15 @@
     publishKey: "pub-c-0f45817e-a821-4d8b-9e50-6a0582cb8ac4",
     subscribeKey: "sub-c-472d7842-645d-11ea-b5f8-9a833ea0503a",
     uuid: uuid,
-    presenceTimeout: 30,
+    presenceTimeout: 10,
     authKey : 'eyJhbGciOiJIUzI1NiJ9.eyJyYXIiOlt7ImlkIjo1LCJuYW1lIjoic3R1ZGVudCJ9XSwib3MiOiJ3ZWIiLCJpZCI6MTIsInRwIjoiYXQiLCJ0aWQiOiJzdHVkZW50IiwiY2lkIjoiMSIsImlhdCI6MTU2NzU5ODE4MiwiaXNzIjoiTm9vbiBBY2FkZW15IiwiZXhwIjoxNTk3NTk4MTgyfQ.h5_bmsh6KVR4JGTQdnoi0Cj6z9SaQjSBArKmBvtzNm4::1674643'
   });
 
   const button = document.getElementById('publish-button');
   const breakoutButton = document.getElementById('breakout-publish-button');
   const createUserButton = document.getElementById('create-user-button');
+  const getUserButton = document.getElementById('get-user-button');
+  const unsubscribeUserButton = document.getElementById('unsubscribe-user-button');
 
   button.addEventListener('click', () => {
     pubnub.publish({
@@ -71,8 +78,31 @@
     );
   });
 
+  getUserButton.addEventListener('click', () => {
+    pubnub.getState(
+      {
+        uuid: uuid,
+        channels: ['classroom.12346', 'chat_event.12346']
+      },
+      function (status, x) {
+        console.log('here it is: ', JSON.stringify(x));
+        // handle state setting response
+      }
+    );
+  });
+
+  unsubscribeUserButton.addEventListener('click', () => {
+    console.log('hit here');
+    pubnub.unsubscribe(
+      {
+        channels: ['classroom.12346', 'chat_event.12346']
+      }
+    );
+  });
+
   pubnub.subscribe({
-    channels: ['chat_event.12346', 'classroom.12346', 'breakout_chat_event.12346_1234', 'breakout_12346.1234', 'classroom_unicast.1674643']
+    channels: ['chat_event.12346', 'classroom.12346', 'breakout_chat_event.12346_1234', 'breakout_12346.1234', 'classroom_unicast.1674643'],
+    withPresence: true
   });
 
   pubnub.addListener({
